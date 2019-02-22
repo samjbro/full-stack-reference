@@ -2,6 +2,12 @@ sudo: required
 services:
   - docker
 
+before_install:
+  - ./scripts/build_test_images.sh
+
+script:
+  - ./scripts/run_tests.sh
+
 after_success:
   - ./scripts/push_to_docker.sh
 
