@@ -1,0 +1,32 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "nginx",
+      "image": "samjbro/full-stack-reference-nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["client", "api"],
+      "memory": 128
+    },
+    {
+      "name": "client",
+      "image": "samjbro/full-stack-reference-client",
+      "hostname": "client",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "api",
+      "image": "samjbro/full-stack-reference-api",
+      "hostname": "api",
+      "essential": false,
+      "memory": 128
+    }
+  ]
+}
