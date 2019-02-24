@@ -21,6 +21,8 @@ services:
     volumes:
       - api_node_modules:/app/node_modules
       - ./api:/app
+    ports:
+      - 4000:4000
   prisma:
     image: prismagraphql/prisma:1.8
     restart: always
