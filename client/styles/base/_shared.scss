@@ -1,0 +1,29 @@
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  // This defines what 1 rem is
+  
+  @include respond(big-desktop) {
+    font-size: 75%; // 1 rem = 12px
+  }
+
+  font-size: 62.5%; // 1 rem = 10px
+
+  @include respond(tab-land) {
+    font-size: 56.25%; // 1 rem = 9px
+  }
+
+  @include respond(tab-port) {
+    font-size: 50%; // 1 rem = 8px
+  }
+}
+
+body {
+  box-sizing: border-box;
+}
