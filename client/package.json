@@ -2,7 +2,11 @@
   "dependencies": {
     "@babel/polyfill": "7.2.5",
     "vue": "2.6.7",
-    "vue-router": "3.0.2"
+    "vue-router": "3.0.2",
+    "@fortawesome/vue-fontawesome": "0.1.5",
+    "@fortawesome/fontawesome-svg-core": "1.2.15",
+    "@fortawesome/free-solid-svg-icons": "5.7.2",
+    "@fortawesome/free-regular-svg-icons": "5.7.2"
   },
   "devDependencies": {
     "nodemon": "1.18.10",
