@@ -1,0 +1,3 @@
+endpoint: http://${env:PRISMA_HOST}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${env:PRISMA_STAGE}
+datamodel: ./datamodel.prisma
+secret: ${env:PRISMA_SECRET}

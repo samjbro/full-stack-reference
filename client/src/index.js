@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import router from './router'
 import apolloProvider from './apollo'
-import './config/font-awesome'
+import './font-awesome'
 import '#/main.scss'
 import App from './components/App'
 
