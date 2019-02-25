@@ -1,3 +1,4 @@
+import { GET_CURRENT_USER } from '../operations'
 const Mutation = {
   setCurrentUser: async (_, { user }, { cache }) => {
     await cache.writeData({ data: { currentUser: user }})

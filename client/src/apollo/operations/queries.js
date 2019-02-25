@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 const GET_CURRENT_USER = gql`
   query {
-    currentUser {
+    currentUser @client {
       id
       name
       email
@@ -19,6 +19,7 @@ const GET_HELLO_MESSAGE = gql`
 const GET_ME = gql`
   query me {
     me {
+      id
       name
       email
     }

@@ -28,7 +28,6 @@ export default {
           }
         })
         localStorage.setItem('token', data.login.token)
-        console.log(data.login.user)
         await this.$apollo.mutate({
           mutation: SET_CURRENT_USER,
           variables: {
