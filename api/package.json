@@ -6,7 +6,7 @@
     "graphql": "14.1.1",
     "graphql-cli": "3.0.11",
     "graphql-import": "0.7.1",
-    "prisma": "1.26.6",
+    "prisma": "1.23.0",
     "prisma-binding": "2.3.2",
     "env-cmd": "8.0.2",
     "bcryptjs": "2.4.3"
@@ -21,9 +21,8 @@
   "scripts": {
     "dev": "env-cmd ./config/dev.env nodemon src/index.js --exec babel-node",
     "build": "babel src -d dist",
-    "start": "npm run prisma:deploy-prod && npm run build && node dist/index.js",
-    "prisma:deploy-dev": "prisma deploy -e ./config/dev.env",
-    "prisma:deploy-prod": "prisma deploy",
+    "start": "prisma deploy && npm run db:seed && npm run build && node dist/index.js",
+    "prisma:deploy": "prisma deploy -e ./config/dev.env",
     "get-schema": "env-cmd ./config/dev.env graphql get-schema -p prisma",
     "db:seed": "env-cmd ./config/dev.env babel-node src/utils/seedDatabase.js"
   }
