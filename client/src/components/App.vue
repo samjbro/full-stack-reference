@@ -3,9 +3,10 @@
     <div class="app__main" v-if="currentUser">
       <fa-icon :icon="['fas', 'user']" />
       {{ hello }}
-      <router-link to="/one">One</router-link>
-      <router-link to="/two">Two</router-link>
+      <router-link to="/">Home</router-link>
+      <router-link to="/chat">Live Chat</router-link>
       <router-view />
+      <br>
       Wait for JWT to expire, then click this button to test auto-logout upon JWT expiration <br> 
       (nb: if you click before expiration the result will be cached an no logout will occur) <br>
       <button @click="testQuery">Fire Query</button>

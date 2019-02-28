@@ -1,15 +1,21 @@
 type Query {
   me: User!
+  comments: [Comment!]!
   hello: String!
 }
 
 type Mutation {
   login(data: LoginUserInput!): AuthPayload!
+  addComment(data: AddCommentInput!): Comment!
 }
 
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input AddCommentInput {
+  text: String!
 }
 
 type AuthPayload {
@@ -22,6 +28,14 @@ type User {
   name: String!
   email: String!
   password: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  author: User!
   createdAt: String!
   updatedAt: String!
 }

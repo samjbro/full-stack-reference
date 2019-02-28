@@ -19,4 +19,13 @@ const LOGIN = gql`
   }
 `
 
-export { SET_CURRENT_USER, LOGIN }
+const ADD_COMMENT = gql`
+  mutation addComment($data: AddCommentInput!) {
+    addComment (data: $data) {
+      id
+      text
+    }
+  }
+`
+
+export { SET_CURRENT_USER, LOGIN, ADD_COMMENT }

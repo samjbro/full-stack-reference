@@ -10,6 +10,24 @@ const Query = {
       }
     })
   },
+  async comments (parent, args, { prisma }, info) {
+    const opArgs = {}
+    if (args.query) {
+      opArgs.where = {
+        text_contains: args.query
+      }
+    }
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(prisma.query.comments(opArgs, info))
+      }, 2000)
+    })
+    return promise.then(comments => comments)
+
+    // await setTimeout(() => {
+    //   return prisma.query.comments(opArgs, info)
+    // }, 2000)
+  },
   hello () {
     return 'Hello World'
   }
@@ -35,6 +53,31 @@ const Mutation = {
       user,
       token: generateToken(user.id)
     }
+  },
+
+  async addComment (parent, { data }, { prisma, request }, info) {
+    const userId = getUserId(request)
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(prisma.mutation.createComment({ data: {
+          text: data.text,
+          author: {
+            connect: {
+              id: userId
+            }
+          }
+        }}, info))
+      }, 2000)
+    })
+    return promise.then(comment => comment)
+    // return prisma.mutation.createComment({ data: {
+      // text: data.text,
+      // author: {
+        // connect: {
+          // id: userId
+        // }
+      // }
+    // }}, info)
   }
 }
 
