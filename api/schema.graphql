@@ -1,15 +1,25 @@
 type Query {
   me: User!
+  comments: [Comment!]!
   hello: String!
 }
 
 type Mutation {
   login(data: LoginUserInput!): AuthPayload!
+  addComment(data: AddCommentInput!): Comment!
+}
+
+type Subscription {
+  comment: CommentSubscriptionPayload! 
 }
 
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input AddCommentInput {
+  text: String!
 }
 
 type AuthPayload {
@@ -24,4 +34,23 @@ type User {
   password: String!
   createdAt: String!
   updatedAt: String!
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  author: User!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
 }

@@ -1,21 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import LiveChat from '@/components/pages/live-chat.vue'
+
 Vue.use(VueRouter)
 
 export default new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/one',
+      path: '/',
       component: {
-        render: h => h('h1', 'One')
+        render: h => h('h1', 'Home')
       }
     },
     {
-      path: '/two',
+      path: '/chat',
       component: {
-        render: h => h('h1', 'Two')
+        render: h => h(LiveChat)
       }
     }
   ]

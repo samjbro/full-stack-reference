@@ -26,4 +26,13 @@ const GET_ME = gql`
   }
 `
 
-export { GET_CURRENT_USER, GET_ME, GET_HELLO_MESSAGE }
+const GET_COMMENTS = gql`
+  query comments {
+    comments {
+      id
+      text
+    }
+  }
+`
+
+export { GET_CURRENT_USER, GET_ME, GET_HELLO_MESSAGE, GET_COMMENTS }

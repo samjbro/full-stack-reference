@@ -3,6 +3,15 @@ type User {
   name: String!
   email: String! @unique
   password: String!
+  comments: [Comment!]! @relation(name: "CommentToUser", onDelete: CASCADE)
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type Comment {
+  id: ID! @unique
+  text: String!
+  author: User! @relation(name: "CommentToUser" onDelete: SET_NULL)
   updatedAt: DateTime!
   createdAt: DateTime!
 }
