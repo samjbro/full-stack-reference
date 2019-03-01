@@ -21,7 +21,7 @@
   "scripts": {
     "dev": "env-cmd ./config/dev.env nodemon src/index.js --exec babel-node",
     "build": "babel src -d dist",
-    "start": "prisma deploy && npm run db:seed && npm run build && node dist/index.js",
+    "start": "prisma deploy && npm run build && node dist/index.js",
     "prisma:deploy": "prisma deploy -e ./config/dev.env",
     "get-schema": "env-cmd ./config/dev.env graphql get-schema -p prisma",
     "db:seed": "env-cmd ./config/dev.env babel-node src/utils/seedDatabase.js"
