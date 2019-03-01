@@ -9,6 +9,10 @@ type Mutation {
   addComment(data: AddCommentInput!): Comment!
 }
 
+type Subscription {
+  comment: CommentSubscriptionPayload! 
+}
+
 input LoginUserInput {
   email: String!
   password: String!
@@ -38,4 +42,15 @@ type Comment {
   author: User!
   createdAt: String!
   updatedAt: String!
+}
+
+type CommentSubscriptionPayload {
+  mutation: MutationType!
+  node: Comment
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
 }

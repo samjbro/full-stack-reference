@@ -27,7 +27,10 @@
         </form>
       </template>
     </ApolloMutation>
-    <div class="live-chat__comments">
+    <div v-if="commentsLoading">
+      Loading comments <fa-icon :icon="['fas', 'spinner']" spin />
+    </div>
+    <div class="live-chat__comments" v-else>
       <div v-for="comment in comments" :key="comment.id" :class="['live-chat__comment', {'live-chat__comment--optimistic': comment.id < 0}]">
         {{ comment.text }}
       </div>
@@ -36,25 +39,33 @@
 </template>
 
 <script>
-import { ADD_COMMENT, GET_COMMENTS } from '@/apollo/operations'
+import { apolloClient } from '@/apollo'
+import { ADD_COMMENT, GET_COMMENTS, SUB_TO_COMMENTS } from '@/apollo/operations'
 export default {
   data () {
     return {
       addComment: ADD_COMMENT,
       getComments: GET_COMMENTS,
-      newComment: ''
+      newComment: '',
+      commentsLoading: 0
     }
   },
   apollo: {
     comments () {
       return {
-        query: this.getComments
+        loadingKey: 'commentsLoading',
+        query: this.getComments,
+        subscribeToMore: [{
+          document: SUB_TO_COMMENTS,
+          updateQuery: (previousResult, { subscriptionData }) => {
+            this.updateComments(apolloClient.cache, { data: { addComment: subscriptionData.data.comment.node }})
+          }
+        }]
       }
     }
   },
   methods: {
     async updateComments (cache, { data: { addComment }}) {
-      console.log('YEYEYEY')
       this.newComment = ''
       const data = cache.readQuery({ query: this.getComments })
       const commentAdded = data.comments.some(comment => comment.id === addComment.id )
