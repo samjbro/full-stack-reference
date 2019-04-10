@@ -2,28 +2,29 @@
   "dependencies": {
     "@babel/polyfill": "7.2.5",
     "express": "4.16.4",
-    "apollo-server-express": "2.4.6",
+    "apollo-server-express": "2.4.8",
     "graphql": "14.1.1",
     "graphql-cli": "3.0.11",
     "graphql-import": "0.7.1",
-    "prisma": "1.23.0",
-    "prisma-binding": "2.3.2",
-    "env-cmd": "8.0.2",
-    "bcryptjs": "2.4.3"
+    "prisma": "1.27.4",
+    "prisma-binding": "2.3.3",
+    "bcryptjs": "2.4.3",
+    "cors": "2.8.5",
+    "body-parser": "1.18.3"
   },
   "devDependencies": {
     "nodemon": "1.18.10",
-    "@babel/core": "7.3.3",
+    "env-cmd": "8.0.2",
+    "@babel/core": "7.3.4",
     "@babel/cli": "7.2.3",
     "@babel/node": "7.2.2",
-    "@babel/preset-env": "7.3.1"
+    "@babel/preset-env": "7.3.4"
   },
   "scripts": {
     "dev": "env-cmd ./config/dev.env nodemon src/index.js --exec babel-node",
-    "build": "babel src -d dist",
     "start": "prisma deploy && npm run build && node dist/index.js",
-    "prisma:deploy": "prisma deploy -e ./config/dev.env",
-    "get-schema": "env-cmd ./config/dev.env graphql get-schema -p prisma",
-    "db:seed": "env-cmd ./config/dev.env babel-node src/utils/seedDatabase.js"
+    "build": "babel src -d dist",
+    "dev:deploy": "prisma deploy -e ./config/dev.env",
+    "get-schema": "env-cmd ./config/dev.env graphql get-schema -p prisma"
   }
 }

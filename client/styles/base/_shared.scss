@@ -27,3 +27,10 @@ html {
 body {
   box-sizing: border-box;
 }
+
+a,
+a:link,
+a:visited {
+  color: inherit;
+  text-decoration: none;
+}

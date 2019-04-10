@@ -7,6 +7,11 @@ const SUB_TO_COMMENTS = gql`
       node {
         id
         text
+        createdAt
+        author {
+          id
+          name
+        }
       }
     }
   }

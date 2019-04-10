@@ -28,3 +28,9 @@
     @media (min-width: 112.5em) { @content }; // 1800px
   };
 }
+
+@mixin vertical-center () {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

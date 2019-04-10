@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs'
-import { generateToken, getUserId } from '../utils'
 
-const Mutation = {
+import { generateToken, getUserId, fakeDelay } from '../utils'
+
+export default {
   async login (parent, { data }, { prisma }, info) {
     const errorMessage = 'Unable to login'
     const user = await prisma.query.user({
@@ -9,35 +10,19 @@ const Mutation = {
         email: data.email
       }
     })
-    if (!user) {
-      throw new Error(errorMessage)
-    }
-    const isMatch = await bcrypt.compare(data.password, user.password)
-    if (!isMatch) {
-      throw new Error(errorMessage)
-    }
+    if (!user) throw new Error(errorMessage)
+
+    const isMatch = bcrypt.compare(data.password, user.password)
+    if (!isMatch) throw new Error(errorMessage)
 
     return {
-      user,
-      token: generateToken(user.id)
+      token: generateToken(user.id),
+      user
     }
   },
-
   async addComment (parent, { data }, { prisma, request }, info) {
     const userId = getUserId(request)
-    // const promise = new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     resolve(prisma.mutation.createComment({ data: {
-    //       text: data.text,
-    //       author: {
-    //         connect: {
-    //           id: userId
-    //         }
-    //       }
-    //     }}, info))
-    //   }, 2000)
-    // })
-    // return promise.then(comment => comment)
+    await fakeDelay(500)
     return prisma.mutation.createComment({ data: {
       text: data.text,
       author: {
@@ -48,5 +33,3 @@ const Mutation = {
     }}, info)
   }
 }
-
-export { Mutation as default }

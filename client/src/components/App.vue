@@ -1,15 +1,19 @@
 <template>
   <div class="app">
     <div class="app__main" v-if="currentUser">
-      <fa-icon :icon="['fas', 'user']" />
-      {{ hello }}
-      <router-link to="/">Home</router-link>
-      <router-link to="/chat">Live Chat</router-link>
+      <div class="app__nav">
+        <div class="app__links">
+          <router-link to="/" class="app__link">Home</router-link>
+          <router-link to="/chat" class="app__link">Live Chat</router-link>
+          <a href="#" class="app__link" @click="logout">Logout</a>
+        </div>
+        <div class="app__user">     
+          <fa-icon :icon="['fas', 'user']" />
+          Hello, {{ currentUser.name }}
+          
+        </div>
+      </div>
       <router-view />
-      <br>
-      Wait for JWT to expire, then click this button to test auto-logout upon JWT expiration <br> 
-      (nb: if you click before expiration the result will be cached an no logout will occur) <br>
-      <button @click="testQuery">Fire Query</button>
     </div>
     <div class="app__login" v-else>
       <login-form />
@@ -19,22 +23,12 @@
 
 <script>
 import LoginForm from './auth/login-form.vue'
+import { apolloClient } from '@/apollo'
 import { GET_CURRENT_USER, GET_ME, GET_HELLO_MESSAGE, SET_CURRENT_USER } from '@/apollo/operations'
 export default {
   components: { LoginForm },
   data () {
     return {}
-  },
-  methods: {
-    async testQuery () {
-      try {
-
-        const { data } = await this.$apollo.query({ query: GET_ME })
-        console.log(data)
-      } catch (e) {
-        console.log(e)
-      }
-    }
   },
   apollo: {
     currentUser () {
@@ -54,7 +48,7 @@ export default {
                 user: data.me
               }
             }).catch(e => {
-              console.log('LOLL')
+              console.log(e)
             })
           } catch (e) {
             console.log(e)
@@ -64,19 +58,46 @@ export default {
           console.log(e)
         }
       }
-    },
-    hello () {
-      return {
-        query: GET_HELLO_MESSAGE
-      }
+    }
+  },
+  methods: {
+    logout () {
+      apolloClient.resetStore()
+      localStorage.clear()
     }
   }
 }
 </script>
 
 <style lang="scss">
+@import "~#/abstracts/mixins";
 .app {
-  color: red;
+  &__main,
+  &__login {
+    height: 100vh;
+    margin: 2rem;
+  }
+  &__login {
+    @include vertical-center();
+  }
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__link {
+    font-size: 2.5rem;
+    padding: 1rem;
+    &:not(:last-child) {
+      border-right: 1px solid black;
+    }
+    color: black;
+    &:hover {
+      color: orangered;
+    }
+  }
+  &__user {
+    font-size: 1.8rem;
+  }
 }
 </style>
 
