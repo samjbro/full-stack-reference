@@ -24,6 +24,11 @@ const ADD_COMMENT = gql`
     addComment (data: $data) {
       id
       text
+      createdAt
+      author {
+        id
+        name
+      }
     }
   }
 `

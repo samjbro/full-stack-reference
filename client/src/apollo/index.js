@@ -1,18 +1,18 @@
 import Vue from 'vue'
 import VueApollo from 'vue-apollo'
-import { ApolloClient } from 'apollo-client'
-import { ApolloLink, Observable } from 'apollo-link'
-import { HttpLink } from 'apollo-link-http'
-import { withClientState } from 'apollo-link-state'
-import { setContext } from 'apollo-link-context'
+import ApolloClient from 'apollo-client'
+import { ApolloLink } from 'apollo-link'
 import { onError } from 'apollo-link-error'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
+import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { getMainDefinition } from 'apollo-utilities'
 
-import defaults from './defaultState'
 import resolvers from './resolvers'
-import { request } from 'https';
+import defaultState from './state'
+
+Vue.use(VueApollo)
 
 const cache = new InMemoryCache()
 
@@ -27,67 +27,31 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
+  if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) => {
       if (message === 'jwt expired') {
         localStorage.removeItem('token')
         apolloClient.resetStore()
       }
       console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
+        `[GraphQL Error]: Message ${message} Location ${locations} Path ${path}`)
     })
-  if (networkError)
-    console.log(`[Network error]: ${networkError}`)
+  }
+  if(networkError) {
+    console.log(`[Network Error]: ${networkError}`)
+  }
 })
 
-const stateLink = withClientState({ resolvers, cache, defaults })
-
-const requestLink = new ApolloLink((operation, forward) => {
-  return new Observable(observer => {
-    let handle
-    Promise.resolve(operation)
-      .then(oper =>
-        request(oper)
-      )
-      .then(() => 
-        handle = forward(operation).subscribe({
-          next: observer.next.bind(observer),
-          error: observer.error.bind(observer),
-          complete: observer.complete.bind(observer)
-        })
-      )
-      .catch(observer.error.bind(observer))
-
-      return () => {
-        if (handle)
-          handle.unsubscribe()
-      }
-  })
+const wsLink = new WebSocketLink({
+  uri: `ws://${window.location.host}/graphql`,
+  options: {
+    reconnect: true
+  }
 })
 
-
-const wsLink = ApolloLink.from([
-  authLink,
-  errorLink,
-  requestLink,
-  new WebSocketLink({
-    uri: `ws://${window.location.host}/graphql`,
-    options: {
-      reconnect: true
-    }
-  })
-])
-
-const httpLink = ApolloLink.from([
-  authLink,
-  errorLink,
-  requestLink,
-  new HttpLink({
-    uri: '/graphql'
-  })
-])
-
+const httpLink = new HttpLink({
+  uri: '/graphql'
+})
 
 const splitLink = ApolloLink.split(
   ({ query }) => {
@@ -98,20 +62,30 @@ const splitLink = ApolloLink.split(
   httpLink
 )
 
-const link = ApolloLink.from([
-  stateLink,
+const link = new ApolloLink.from([
+  authLink,
+  errorLink,
   splitLink
 ])
 
 const apolloClient = new ApolloClient({
+  resolvers,
   link,
   cache
+})
+
+cache.writeData({
+  data: defaultState
+})
+
+apolloClient.onResetStore(() => {
+  cache.writeData({
+    data: defaultState
+  })
 })
 
 const apolloProvider = new VueApollo({
   defaultClient: apolloClient
 })
-
-Vue.use(VueApollo)
 
 export { apolloProvider as default, apolloClient }

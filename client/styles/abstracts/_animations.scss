@@ -1,0 +1,17 @@
+@keyframes shake {
+  8%, 41% {
+    -webkit-transform: translateX(-1rem);
+  }
+  25%, 58% {
+    -webkit-transform: translateX(1rem);
+  }
+  75% {
+    -webkit-transform: translateX(-.5rem);
+  }
+  92% {
+    -webkit-transform: translateX(.5rem);
+  }
+  0%, 100% {
+    -webkit-transform: translateX(0);
+  }
+}

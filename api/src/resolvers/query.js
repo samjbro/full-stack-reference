@@ -1,6 +1,6 @@
-import { getUserId } from '../utils'
+import { getUserId, fakeDelay } from '../utils'
 
-const Query = {
+export default {
   me (parent, args, { prisma, request }, info) {
     const userId = getUserId(request)
     return prisma.query.user({
@@ -10,23 +10,7 @@ const Query = {
     })
   },
   async comments (parent, args, { prisma }, info) {
-    const opArgs = {}
-    if (args.query) {
-      opArgs.where = {
-        text_contains: args.query
-      }
-    }
-    return await prisma.query.comments(opArgs, info)
-    // const promise = new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     resolve(prisma.query.comments(opArgs, info))
-    //   }, 2000)
-    // })
-    // return promise.then(comments => comments)
-  },
-  hello () {
-    return 'Hello World'
+    await fakeDelay(1000)
+    return prisma.query.comments({}, info)
   }
 }
-
-export { Query as default }

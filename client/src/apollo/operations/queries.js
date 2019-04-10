@@ -31,6 +31,11 @@ const GET_COMMENTS = gql`
     comments {
       id
       text
+      createdAt
+      author {
+        id
+        name
+      }
     }
   }
 `
