@@ -12,7 +12,7 @@
         <div class="live-chat__author">
           <div>{{ formatUser(comment.author) }} said:</div> 
         </div>
-        <div class="live-chat__comment">
+        <div>
           {{ comment.text }}
         </div>
       </div>
@@ -42,7 +42,7 @@
         <form 
           @submit.prevent="mutate" 
           class="live-chat__form">
-          <input v-model="newComment" placeholder="Have something to say?" autocomplete="off">
+          <input v-model="newComment" placeholder="Have something to say?" autocomplete="off" autofocus>
         </form>
       </template>
     </ApolloMutation>
@@ -134,6 +134,7 @@ export default {
   }
 
   &__comment {
+    padding: .5rem .7rem;
     &:not(:last-child) {
       border-bottom: 1px solid black;
     }
@@ -156,6 +157,9 @@ export default {
     input {
       font-size: 2rem;
       width: 100%;
+      border: 1px solid black;
+      padding: .8rem 1rem;
+      border-radius: .4rem;
     }
   }
 }
